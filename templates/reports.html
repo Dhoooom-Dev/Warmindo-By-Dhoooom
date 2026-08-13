@@ -1,0 +1,33 @@
+<!-- WARMINDO BY DHOO_CO — © 2026 dhoo_co | Original source project -->
+{% extends "base.html" %}{% block content %}
+<div class="topline"><div><div class="title">Laporan & Analitik</div><div class="subtitle">Detail transaksi dan menu yang benar-benar dibeli pelanggan.</div></div></div>
+<div class="line"></div>
+
+<div class="card">
+  <h3>Detail Penjualan</h3>
+  <div class="smallnote">Setiap transaksi ditampilkan bersama item yang dibeli, bukan hanya total harian.</div>
+  <div style="overflow:auto;margin-top:10px">
+  <table class="table">
+    <tr><th>WAKTU</th><th>NO. TRANSAKSI</th><th>MENU DIBELI</th><th>PEMBAYARAN</th><th style="text-align:right">TOTAL</th></tr>
+    {% for r in details %}
+    <tr>
+      <td>{{r.created_at}}</td>
+      <td>{{r.trx_no}}</td>
+      <td><b>{{r.items}}</b></td>
+      <td><span class="badge safe">{{r.payment_method}}</span></td>
+      <td style="text-align:right">{{r.total|rupiah}}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="muted">Belum ada transaksi.</td></tr>
+    {% endfor %}
+  </table>
+  </div>
+</div>
+
+<div class="card" style="margin-top:15px">
+  <h3>Ringkasan Harian</h3>
+  <table class="table"><tr><th>TANGGAL</th><th>TRANSAKSI</th><th>OMZET</th></tr>
+  {% for r in rows %}<tr><td>{{r.day}}</td><td>{{r.trx}}</td><td>{{r.omzet|rupiah}}</td></tr>
+  {% else %}<tr><td colspan="3" class="muted">Belum ada data.</td></tr>{% endfor %}</table>
+</div>
+{% endblock %}

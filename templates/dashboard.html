@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero"><div class="hero-copy"><div class="eyebrow">OPERATIONS OVERVIEW · TODAY</div>
+<h1>Selamat datang di<br><span>{{store.store_name or "Warmindo By dhoo_co"}}</span></h1>
+<p>Pantau penjualan, stok, kasir, dan performa toko dari satu tempat.</p>
+<div class="hero-actions"><a class="primary-btn" href="{{url_for('pos')}}">Buka Kasir <span>→</span></a><a class="ghost-btn" href="{{url_for('reports')}}">Lihat Laporan</a></div></div>
+<div class="hero-art"><div class="plate">🍜</div><div class="float-card fc1">🍳 <b>Fresh</b><small>Menu hari ini</small></div><div class="float-card fc2">⚡ <b>Fast POS</b><small>Checkout cepat</small></div><b class="spark s1"></b><b class="spark s2"></b></div></section>
+<div class="section-head"><div><div class="section-kicker">TODAY</div><h2>Ringkasan hari ini</h2></div><div class="live-badge"><i></i> LIVE</div></div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-icon orange">Rp</div><div><span>Penjualan</span><strong>{{total_sales|rupiah if total_sales is defined else "Rp0"}}</strong><small>Transaksi hari ini</small></div></div>
+<div class="stat-card"><div class="stat-icon green">↗</div><div><span>Transaksi</span><strong>{{trx_count if trx_count is defined else 0}}</strong><small>Order tercatat</small></div></div>
+<div class="stat-card"><div class="stat-icon purple">◫</div><div><span>Menu</span><strong>{{product_count if product_count is defined else 0}}</strong><small>Produk aktif</small></div></div>
+<div class="stat-card"><div class="stat-icon blue">◇</div><div><span>Stok kritis</span><strong>{{low_stock if low_stock is defined else 0}}</strong><small>Perlu diperhatikan</small></div></div></div>
+<div class="dashboard-grid"><section class="panel"><div class="panel-head"><div><div class="section-kicker">ACTIVITY</div><h3>Aktivitas terbaru</h3></div><a href="{{url_for('reports')}}">Semua →</a></div>
+{% if recent_transactions is defined and recent_transactions %}{% for t in recent_transactions[:6] %}<div class="activity-row"><div class="activity-avatar">▣</div><div class="activity-main"><b>{{t.trx_no}}</b><span>{{t.created_at}}</span></div><strong>{{t.total|rupiah}}</strong><em>{{t.payment_method}}</em></div>{% endfor %}{% else %}<div class="empty-state">✦<b>Belum ada aktivitas</b><small>Transaksi baru akan muncul di sini.</small></div>{% endif %}</section>
+<section class="panel"><div class="panel-head"><div><div class="section-kicker">QUICK ACCESS</div><h3>Operasional</h3></div></div>
+<a class="quick-card" href="{{url_for('pos')}}"><span>▣</span><div><b>Kasir / POS</b><small>Buat transaksi baru</small></div><i>→</i></a>
+<a class="quick-card" href="{{url_for('stock')}}"><span>◇</span><div><b>Stok</b><small>Cek bahan & minimum stok</small></div><i>→</i></a>
+<a class="quick-card" href="{{url_for('settings')}}"><span>⚙</span><div><b>Identitas Toko</b><small>Nama, owner, QRIS & struk</small></div><i>→</i></a></section></div>
+<div class="dashboard-footer"><span>Warmindo By dhoo_co · Professional F&B POS</span><span>V10</span></div>{% endblock %}

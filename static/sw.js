@@ -1,0 +1,1 @@
+const CACHE="warmindo-v10";self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["/static/style.css","/static/app.js","/static/manifest.webmanifest","/static/icons/icon-192.png","/static/icons/icon-512.png"])).then(()=>self.skipWaiting())));self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));

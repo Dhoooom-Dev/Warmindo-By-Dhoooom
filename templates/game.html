@@ -1,0 +1,46 @@
+<!-- WARMINDO BY DHOO_CO — © 2026 dhoo_co | Original source project -->
+{% extends "base.html" %}{% block content %}
+<div class="topline"><div><div class="title">Mini Game</div><div class="subtitle">Warmindo Rush — tantangan cepat saat toko sedang sepi.</div></div><div class="online">15 DETIK</div></div>
+<div class="line"></div>
+<div class="gamehero">
+  <div class="gamebadge">WARMINDO RUSH</div>
+  <h1>Layani Pesanan Secepat Mungkin!</h1>
+  <p>Klik pesanan yang muncul sebelum waktunya habis. Combo bikin skor makin tinggi.</p>
+  <div class="game-stats"><div><span>SKOR</span><b id="score">0</b></div><div><span>COMBO</span><b id="combo">0x</b></div><div><span>WAKTU</span><b id="timer">15</b></div><div><span>BEST</span><b id="best">0</b></div></div>
+  <div class="orderboard" id="orderboard"><div class="startscreen"><div class="bigcup">🍜</div><b>Siap melayani?</b><span>Tekan MULAI untuk masuk mode rush.</span></div></div>
+  <button id="startBtn" class="btn game-start" type="button">MULAI WARMINDO RUSH</button>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const orders=[
+ ["🍜","Mie Ayam"],["🍜","Mie Goreng"],["🍚","Nasi Goreng"],["🍗","Ayam Geprek"],
+ ["🧋","Es Teh"],["🥤","Kopi Susu"],["🍟","Kentang"],["🍵","Matcha"]
+];
+let score=0,combo=0,time=15,running=false,timerId,best=Number(localStorage.getItem("warmindo_best")||0);
+document.getElementById("best").textContent=best;
+const scoreEl=document.getElementById("score"),comboEl=document.getElementById("combo"),timerEl=document.getElementById("timer"),board=document.getElementById("orderboard"),startBtn=document.getElementById("startBtn");
+
+function spawn(){
+ const o=orders[Math.floor(Math.random()*orders.length)];
+ board.innerHTML="";
+ const btn=document.createElement("button"); btn.className="ordercard"; btn.type="button";
+ btn.innerHTML=`<span class="foodemoji">${o[0]}</span><b>${o[1]}</b><small>Klik untuk sajikan</small>`;
+ btn.onclick=()=>{if(!running)return; score+=1+Math.min(combo,5); combo++; update(); spawn();};
+ board.appendChild(btn);
+}
+function update(){scoreEl.textContent=score;comboEl.textContent=combo+"x";timerEl.textContent=time;}
+function finish(){
+ running=false; clearInterval(timerId);
+ if(score>best){best=score;localStorage.setItem("warmindo_best",best);document.getElementById("best").textContent=best;}
+ board.innerHTML=`<div class="startscreen"><div class="bigcup">🏆</div><b>Rush selesai!</b><span>Skor kamu: ${score} • Best: ${best}</span></div>`;
+ startBtn.textContent="MAIN LAGI";
+}
+function start(){
+ score=0;combo=0;time=15;running=true;update();spawn();startBtn.textContent="RESTART";
+ clearInterval(timerId);
+ timerId=setInterval(()=>{time--;update();if(time<=0)finish();},1000);
+}
+startBtn.onclick=start;
+</script>
+{% endblock %}

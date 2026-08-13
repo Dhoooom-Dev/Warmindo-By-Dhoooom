@@ -1,0 +1,3 @@
+<!-- WARMINDO BY DHOO_CO — © 2026 dhoo_co | Original source project -->
+
+{% extends "base.html" %}{% block content %}<div class="topline"><div><div class="title">Monitoring Stok</div><div class="subtitle">Pantau stok, minimum, dan bahan yang harus segera dibeli.</div></div></div><div class="line"></div><div class="card"><table class="table"><tr><th>BAHAN</th><th>STOK</th><th>MINIMUM</th><th>STATUS</th></tr>{% for i in ingredients %}<tr><td><b>{{i.name}}</b></td><td>{{i.stock|qty}} {{i.unit}}</td><td>{{i.min_stock|qty}} {{i.unit}}</td><td>{% if i.stock<=0 %}<span class="badge danger">HABIS</span>{% elif i.stock<=i.min_stock %}<span class="badge warn">MENIPIS</span>{% else %}<span class="badge safe">AMAN</span>{% endif %}</td></tr>{% endfor %}</table></div>{% endblock %}

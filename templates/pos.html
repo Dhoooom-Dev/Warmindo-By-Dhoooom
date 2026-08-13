@@ -1,0 +1,193 @@
+<!-- WARMINDO BY DHOO_CO — © 2026 dhoo_co | Original source project -->
+{% extends "base.html" %}{% block content %}
+<div class="topline">
+  <div>
+    <div class="title">Kasir / POS</div>
+    <div class="subtitle">Klik menu untuk menambah ke keranjang. Stok bahan dicek sebelum pembayaran.</div>
+  </div>
+  <div class="online">● ONLINE</div>
+</div>
+<div class="line"></div>
+
+<div class="row">
+  <div class="card grow">
+    <div class="formrow" style="margin-bottom:15px">
+      <input id="search" class="input grow" placeholder="Cari menu...">
+      <select id="cat" class="select">
+        <option>Semua</option>
+        <option>Makanan</option>
+        <option>Minuman</option>
+        <option>Snack</option>
+      </select>
+    </div>
+
+    <div id="menus" class="menu-grid">
+      {% for p in products %}
+      <button type="button"
+              class="menu-card"
+              data-id="{{ p.id }}"
+              data-price="{{ p.price }}"
+              data-name="{{ p.name }}"
+              data-name-search="{{ p.name|lower }}"
+              data-cat="{{ p.category }}">
+        <div class="emoji">
+          {% if p.category=='Makanan' %}🍛{% elif p.category=='Minuman' %}🧋{% else %}🍟{% endif %}
+        </div>
+        <b>{{ p.name }}</b>
+        <div class="smallnote">{{ p.category }}</div>
+        <div class="price">{{ p.price|rupiah }}</div>
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card cart" style="width:390px">
+    <h2>Keranjang</h2>
+    <div id="cart"></div>
+    <div class="total" id="total">Rp 0</div>
+
+    <label class="smallnote">DISKON</label>
+    <input id="discount" class="input" style="width:100%;margin:5px 0 10px" type="number" value="0" min="0">
+
+    <label class="smallnote">METODE PEMBAYARAN</label>
+    <select id="method" class="select" style="width:100%;margin:5px 0 10px">
+      <option>Cash</option>
+      <option>QRIS</option>
+      <option>Debit</option>
+      <option>Transfer</option>
+    </select>
+
+    <label class="smallnote">UANG DIBAYAR</label>
+    <input id="payment" class="input" style="width:100%;margin:5px 0 10px" type="number" min="0" value="0">
+
+    <div id="change" class="smallnote" style="text-align:right;margin:8px 0">Kembalian: Rp 0</div>
+    <button id="checkoutBtn" type="button" class="btn" style="width:100%">BAYAR & BUAT STRUK</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let cart = [];
+
+function money(n) {
+  return "Rp " + Math.round(Number(n) || 0).toLocaleString("id-ID");
+}
+
+function add(id, price, name) {
+  id = Number(id);
+  price = Number(price);
+  let x = cart.find(a => a.id === id);
+  if (x) x.qty++;
+  else cart.push({id, price, name, qty: 1});
+  render();
+}
+
+function minus(id) {
+  id = Number(id);
+  let x = cart.find(a => a.id === id);
+  if (!x) return;
+  x.qty--;
+  if (x.qty <= 0) cart = cart.filter(a => a.id !== id);
+  render();
+}
+
+function render() {
+  const el = document.getElementById("cart");
+  el.innerHTML = "";
+  let sub = 0;
+
+  cart.forEach(x => {
+    sub += x.price * x.qty;
+
+    const row = document.createElement("div");
+    row.className = "cartitem";
+
+    const info = document.createElement("div");
+    const name = document.createElement("b");
+    name.textContent = x.name;
+    const note = document.createElement("div");
+    note.className = "smallnote";
+    note.textContent = `${x.qty} × ${money(x.price)}`;
+    info.append(name, note);
+
+    const actions = document.createElement("div");
+
+    const minusBtn = document.createElement("button");
+    minusBtn.type = "button";
+    minusBtn.className = "btn small gray";
+    minusBtn.textContent = "−";
+    minusBtn.addEventListener("click", () => minus(x.id));
+
+    const plusBtn = document.createElement("button");
+    plusBtn.type = "button";
+    plusBtn.className = "btn small";
+    plusBtn.textContent = "+";
+    plusBtn.addEventListener("click", () => add(x.id, x.price, x.name));
+
+    actions.append(minusBtn, document.createTextNode(" "), plusBtn);
+    row.append(info, actions);
+    el.appendChild(row);
+  });
+
+  const d = Number(document.getElementById("discount").value) || 0;
+  const total = Math.max(0, sub - d);
+  document.getElementById("total").textContent = money(total);
+
+  const pay = Number(document.getElementById("payment").value) || 0;
+  const method = document.getElementById("method").value;
+  const change = method === "Cash" ? Math.max(0, pay - total) : 0;
+  document.getElementById("change").textContent = "Kembalian: " + money(change);
+}
+
+async function checkout() {
+  if (!cart.length) {
+    alert("Keranjang masih kosong.");
+    return;
+  }
+
+  const discount = Number(document.getElementById("discount").value) || 0;
+  const method = document.getElementById("method").value;
+  const payment = Number(document.getElementById("payment").value) || 0;
+
+  const r = await postJSON("{{url_for('checkout')}}", {
+    items: cart,
+    discount,
+    method,
+    payment
+  });
+
+  if (r.ok) location.href = r.url;
+  else alert(r.error);
+}
+
+function filterMenus() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const c = document.getElementById("cat").value;
+
+  document.querySelectorAll(".menu-card").forEach(card => {
+    const name = card.dataset.nameSearch || "";
+    const cat = card.dataset.cat || "";
+    const visible = (!q || name.includes(q)) && (c === "Semua" || cat === c);
+    card.style.display = visible ? "" : "none";
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".menu-card").forEach(card => {
+    card.addEventListener("click", () => {
+      add(card.dataset.id, card.dataset.price, card.dataset.name);
+    });
+  });
+
+  document.getElementById("checkoutBtn").addEventListener("click", checkout);
+  document.getElementById("discount").addEventListener("input", render);
+  document.getElementById("payment").addEventListener("input", render);
+  document.getElementById("method").addEventListener("change", render);
+  document.getElementById("search").addEventListener("input", filterMenus);
+  document.getElementById("cat").addEventListener("change", filterMenus);
+
+  render();
+});
+</script>
+{% endblock %}

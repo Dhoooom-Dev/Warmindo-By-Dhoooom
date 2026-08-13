@@ -1,0 +1,13 @@
+# Abaikan Folder Data & Laporan Toko
+data/
+exports/
+
+# Abaikan File Konfigurasi Rahasia
+store_config.py
+store_settings.json
+OWNERSHIP.txt
+.env
+
+# Abaikan Cache Python
+__pycache__/
+*.pyc

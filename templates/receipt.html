@@ -1,0 +1,8 @@
+<!-- WARMINDO BY DHOO_CO — © 2026 dhoo_co | Original source project -->
+
+<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Struk {{t.trx_no}}</title><link rel="stylesheet" href="{{url_for('static',filename='style.css')}}"></head><body>
+<div class="receipt"><h1>{{store.store_name}}</h1><div style="text-align:center;font-size:11px">{{store.store_address}}<br>{{store.store_phone}}</div><hr>
+<div>No: {{t.trx_no}}</div><div>{{t.created_at}}</div><div>Metode: <b>{{t.payment_method}}</b></div><hr>
+{% for x in items %}<div class="r"><span>{{x.name}} x{{x.qty}}</span><span>{{x.subtotal|rupiah}}</span></div>{% endfor %}<hr>
+<div class="r"><span>Subtotal</span><span>{{t.subtotal|rupiah}}</span></div><div class="r"><span>Diskon</span><span>{{t.discount|rupiah}}</span></div><div class="r"><b>TOTAL</b><b>{{t.total|rupiah}}</b></div><div class="r"><span>DIBAYAR</span><span>{{t.payment|rupiah}}</span></div><div class="r"><b>KEMBALIAN</b><b>{{t.change_amount|rupiah}}</b></div><hr><div style="text-align:center">{{store.receipt_footer}}</div>
+<button class="no-print" onclick="window.print()">Cetak Struk</button> <button class="no-print" onclick="location.href='{{url_for('pos')}}'">Kembali</button></div></body></html>

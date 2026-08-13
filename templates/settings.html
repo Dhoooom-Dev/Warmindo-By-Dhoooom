@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-heading"><div class="eyebrow">CONTROL CENTER</div><h1>Pengaturan</h1><p>Ubah identitas toko tanpa menyentuh coding.</p></div>
+<div class="settings-grid"><section class="panel settings-card"><div class="panel-head"><div><div class="section-kicker">STORE IDENTITY</div><h3>Identitas Toko</h3></div><span class="soft-pill">EDITABLE</span></div>
+<form method="post" class="settings-form"><input type="hidden" name="action" value="store">
+<label>Nama toko<input name="store_name" value="{{s.store_name}}" required></label><label>Nama owner<input name="store_owner" value="{{s.store_owner}}" placeholder="Nama pemilik"></label>
+<label>Alamat<input name="store_address" value="{{s.store_address}}"></label><label>Nomor telepon<input name="store_phone" value="{{s.store_phone}}"></label>
+<label>Identitas QRIS<input name="store_qris" value="{{s.store_qris}}" placeholder="Contoh: QRIS · Warmindo"></label><label>Footer struk<input name="receipt_footer" value="{{s.receipt_footer}}"></label>
+<button class="primary-btn" type="submit">Simpan perubahan <span>→</span></button></form></section>
+<section class="panel settings-card"><div class="panel-head"><div><div class="section-kicker">SECURITY</div><h3>Akun & Keamanan</h3></div></div>
+<div class="account-box"><span class="account-avatar">{{username[:1]|upper}}</span><div><b>{{username}}</b><small>Role · {{role}}</small></div></div>
+<form method="post" class="settings-form"><input type="hidden" name="action" value="password"><label>Password lama<input type="password" name="old_password"></label><label>Password baru<input type="password" name="new_password"></label><button class="ghost-btn" type="submit">Ganti password</button></form>
+<div class="production-note"><b>Android-ready foundation</b><p>Responsive + PWA sudah disiapkan. Play Store tetap membutuhkan hosting HTTPS, signing Android, dan Google Play Console.</p></div></section></div>{% endblock %}

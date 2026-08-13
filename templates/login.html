@@ -1,0 +1,7 @@
+<!-- WARMINDO BY DHOO_CO — © 2026 dhoo_co | Original source project -->
+
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login • WARMINDO BY DHOO_CO V8.2 PRO</title><link rel="stylesheet" href="{{url_for('static',filename='style.css')}}"></head><body>
+<div class="loginbg"><div class="loginbox"><h1>F<span>&</span>B</h1><div class="sub">MANAGEMENT SYSTEM V8.2 PRO</div>
+{% with msgs=get_flashed_messages(with_categories=true) %}{% for cat,msg in msgs %}<div class="flash">{{msg}}</div>{% endfor %}{% endwith %}
+<form method="post"><label>USERNAME</label><input class="input" name="username" value="admin" required><label>PASSWORD</label><input class="input" type="password" name="password" value="admin" required><button class="btn">MASUK</button></form>
+<p class="smallnote" style="text-align:center;margin-top:16px">Demo: admin / admin</p></div></div></body></html>

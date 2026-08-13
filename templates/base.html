@@ -1,0 +1,19 @@
+<!-- WARMINDO BY DHOO_CO — V10 -->
+<!doctype html><html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d12"><link rel="manifest" href="{{url_for('static',filename='manifest.webmanifest')}}">
+<link rel="icon" href="{{url_for('static',filename='icons/icon-192.png')}}"><title>{{store.store_name or "Warmindo By dhoo_co"}}</title>
+<link rel="stylesheet" href="{{url_for('static',filename='style.css')}}"></head><body>
+<div class="app-shell"><aside class="sidebar">
+<div class="brand-block"><div class="brand-logo">W</div><div class="brand-copy"><strong>{{store.store_name or "Warmindo By dhoo_co"}}</strong></div></div>
+<div class="profile-chip"><i></i><span>{{username|upper}}</span><small>{{role|upper}}</small></div>
+<nav class="nav">
+<div class="nav-label">UTAMA</div><a href="{{url_for('dashboard')}}">⌂ <span>Dashboard</span></a><a href="{{url_for('pos')}}">▣ <span>Kasir / POS</span></a>
+<div class="nav-label">OPERASIONAL</div><a href="{{url_for('products')}}">☷ <span>Menu Produk</span></a><a href="{{url_for('stock')}}">◇ <span>Bahan & Stok</span></a><a href="{{url_for('recipes')}}">♨ <span>Recipe / BOM</span></a><a href="{{url_for('monitor')}}">◉ <span>Monitoring Stok</span></a>
+<div class="nav-label">BISNIS</div><a href="{{url_for('finance')}}">Rp <span>Keuangan</span></a><a href="{{url_for('reports')}}">▤ <span>Laporan & Analitik</span></a><a href="{{url_for('settings')}}">⚙ <span>Pengaturan</span></a><a href="{{url_for('game')}}">🎮 <span>Mini Game</span></a>
+</nav><div class="sidebar-bottom"><a class="logout-btn" href="{{url_for('logout')}}">↪ Keluar</a></div></aside>
+<main class="main-content"><div class="mobile-topbar"><b>{{store.store_name or "Warmindo By dhoo_co"}}</b></div>
+{% with msgs=get_flashed_messages(with_categories=true) %}{% for cat,msg in msgs %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}{% endwith %}
+{% block content %}{% endblock %}</main></div>
+<script src="{{url_for('static',filename='app.js')}}"></script><script>if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("{{url_for('static',filename='sw.js')}}").catch(()=>{}));</script>
+{% block scripts %}{% endblock %}</body></html>
