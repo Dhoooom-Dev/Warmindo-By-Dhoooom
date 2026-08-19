@@ -191,12 +191,8 @@ def dashboard():
     trx=c.execute("SELECT COUNT(*) v FROM transactions WHERE date(created_at)=?",(today,)).fetchone()["v"]
     low=c.execute("SELECT COUNT(*) v FROM ingredients WHERE stock<=min_stock").fetchone()["v"]
     top=c.execute("""SELECT p.name,SUM(ti.qty) qty FROM transaction_items ti
-        JOIN products p ON p.id=ti.product_id JOIN transactions t ON
-    + CategoryInfo          : ObjectNotFound: (git:String) [], CommandNotFoundException
-    + FullyQualifiedErrorId : CommandNotFoundException
- 
-PS C:\Users\LENOVO\OneDrive\Desktop\Warmindo By dhoo_coV7> 
-.id=ti.transaction_id
+        
+    JOIN products p ON p.id=ti.product_id JOIN transactions t ON t.id=ti.transaction_id
         WHERE date(t.created_at)=? GROUP BY p.id ORDER BY qty DESC LIMIT 5""",(today,)).fetchall()
     c.close()
     return render_template("dashboard.html",omzet=omzet,trx=trx,low=low,top=top)
