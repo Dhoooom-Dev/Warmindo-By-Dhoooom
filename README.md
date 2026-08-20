@@ -57,7 +57,7 @@ Default demo branding: **Warmindo By dhoo_co**. Identitas toko dapat diubah mela
 
 | Home | Dashboard |
 |---|---|
-| ![Home](Home.png) | ![Dashboard](Dashboard.png) |
+| ![Home](Home.png) | ![Dashboard](Dasboard.png) |
 
 ### Point of Sale
 
