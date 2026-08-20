@@ -50,3 +50,39 @@ Target pengembangan:
 - Capacitor / Android Studio (Android phase)
 
 Default demo branding: **Warmindo By dhoo_co**. Identitas toko dapat diubah melalui Pengaturan.
+
+## Screenshots
+
+### Main Interface
+
+| Home | Dashboard |
+|---|---|
+| ![Home](Home.png) | ![Dashboard](Dashboard.png) |
+
+### Point of Sale
+
+| Kasir / POS | Menu |
+|---|---|
+| ![Kasir](Kasir.png) | ![Menu](Menu.png) |
+
+### Inventory
+
+| Bahan & Stok | Monitoring Stok |
+|---|---|
+| ![Bahan & Stok](Bahan-Stok.png) | ![Monitoring Stok](Monitoring-stok.png) |
+
+### Recipe & Finance
+
+| Recipe / BOM | Keuangan |
+|---|---|
+| ![Recipe / BOM](Recipe-Bom.png) | ![Keuangan](Keuangan.png) |
+
+### Reports & Settings
+
+| Laporan & Analitik | Pengaturan |
+|---|---|
+| ![Laporan](Laporan-Analitik.png) | ![Pengaturan](Pengaturan.png) |
+
+### Authentication
+
+![Login](Login.png)
